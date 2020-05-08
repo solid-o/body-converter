@@ -1,0 +1,49 @@
+{
+    "name": "solido/body-converter",
+    "description": "Library to read request parameters encoded in request body and set them into correct parameter bags",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alessandro Chitolina",
+            "email": "alekitto@gmail.com"
+        },
+        {
+            "name": "Massimiliano Braglia",
+            "email": "massimiliano.braglia@gmail.com"
+        }
+    ],
+    "scripts": {
+        "phpstan": "phpstan analyse src/ -c vendor/solido/php-coding-standards/phpstan.neon --level=8 --no-progress -vvv --memory-limit=2048M",
+        "cscheck": "vendor/bin/phpcs --standard=Solido src/",
+        "csfix": "vendor/bin/phpcbf --standard=Solido src/"
+    },
+    "require": {
+        "php": "^7.4",
+        "ext-json": "*",
+        "symfony/http-foundation": "^4.4|^5.0",
+        "solido/common": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.0|9.1",
+        "phpspec/prophecy-phpunit": "^2.0",
+        "roave/security-advisories": "dev-master",
+        "solido/php-coding-standards": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Solido\\BodyConverter\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Solido\\BodyConverter\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "archive": {
+        "exclude": [ ".gitignore", ".travis.yml", "tests" ]
+    }
+}
