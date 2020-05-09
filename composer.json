@@ -21,8 +21,7 @@
     "require": {
         "php": "^7.4",
         "ext-json": "*",
-        "symfony/http-foundation": "^4.4|^5.0",
-        "solido/common": "dev-master"
+        "symfony/http-foundation": "^4.4|^5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.0|9.1",
