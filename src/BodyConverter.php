@@ -21,35 +21,35 @@ class BodyConverter
         $this->decoderProvider = $decoderProvider;
     }
 
-    public function decode(Request $request): void
+    public function decode(Request $request): ParameterBag
     {
         $contentType = $request->headers->get('Content-Type', 'application/x-www-form-urlencoded');
         if ($contentType === null || in_array($request->getMethod(), [Request::METHOD_GET, Request::METHOD_HEAD], true)) {
-            return;
+            return clone $request->request;
         }
 
         $format = $this->getFormat($request, $contentType);
         if ($format === null || $format === 'form') {
-            return;
+            return clone $request->request;
         }
 
         try {
             $decoder = $this->decoderProvider->get($format);
         } catch (UnsupportedFormatException $ex) {
-            return;
+            return new ParameterBag();
         }
 
         $content = $request->getContent();
         assert(is_string($content));
 
         $parameters = $decoder->decode($content);
-        $request->request = new ParameterBag($parameters);
+
+        return new ParameterBag($parameters);
     }
 
     private function getFormat(Request $request, string $contentType): ?string
     {
         $format = $request->getFormat($contentType);
-
         if ($format === null && $contentType === 'application/merge-patch+json') {
             return 'json';
         }
