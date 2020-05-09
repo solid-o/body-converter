@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Solido\BodyConverter;
 
+use Solido\BodyConverter\Decoder\DecoderProvider;
 use Solido\BodyConverter\Decoder\DecoderProviderInterface;
+use Solido\BodyConverter\Decoder\JsonDecoder;
 use Solido\BodyConverter\Exception\UnsupportedFormatException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +18,14 @@ final class BodyConverter implements BodyConverterInterface
 {
     private DecoderProviderInterface $decoderProvider;
 
-    public function __construct(DecoderProviderInterface $decoderProvider)
+    public function __construct(?DecoderProviderInterface $decoderProvider = null)
     {
+        if ($decoderProvider === null) {
+            $decoderProvider = new DecoderProvider([
+                'json' => new JsonDecoder(),
+            ]);
+        }
+
         $this->decoderProvider = $decoderProvider;
     }
 
