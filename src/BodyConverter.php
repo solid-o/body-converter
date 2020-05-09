@@ -12,7 +12,7 @@ use function assert;
 use function in_array;
 use function is_string;
 
-class BodyConverter
+final class BodyConverter implements BodyConverterInterface
 {
     private DecoderProviderInterface $decoderProvider;
 
