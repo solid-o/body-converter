@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Solido\BodyConverter\Decoder;
 
-use Solido\BodyConverter\Exception\DecodeException;
+use Solido\BodyConverter\Exception\InvalidJSONException;
 use Throwable;
 use function is_string;
 use function json_decode;
@@ -25,7 +25,7 @@ class JsonDecoder implements DecoderInterface
         try {
             $content = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
         } catch (Throwable $e) {
-            throw new DecodeException('Invalid request body', 0, $e);
+            throw new InvalidJSONException($content, $e->getMessage(), $e);
         }
 
         array_walk_recursive($content, static function (&$value) {
