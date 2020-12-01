@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Solido\BodyConverter\Exception;
 
 use Throwable;
+
 use function Safe\sprintf;
 
 class InvalidJSONException extends DecodeException

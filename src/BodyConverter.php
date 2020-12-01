@@ -10,6 +10,7 @@ use Solido\BodyConverter\Decoder\JsonDecoder;
 use Solido\BodyConverter\Exception\UnsupportedFormatException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
+
 use function assert;
 use function in_array;
 use function is_string;

@@ -6,9 +6,11 @@ namespace Solido\BodyConverter\Decoder;
 
 use Solido\BodyConverter\Exception\InvalidJSONException;
 use Throwable;
+
 use function is_string;
 use function json_decode;
 use function Safe\array_walk_recursive;
+
 use const JSON_THROW_ON_ERROR;
 
 class JsonDecoder implements DecoderInterface
