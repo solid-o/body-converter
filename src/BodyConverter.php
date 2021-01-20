@@ -17,17 +17,19 @@ use function is_string;
 
 final class BodyConverter implements BodyConverterInterface
 {
+    private const JSON_FORMATS = [
+        'application/json' => true,
+        'application/json-patch+json' => true,
+        'application/merge-patch+json' => true,
+    ];
+
     private DecoderProviderInterface $decoderProvider;
 
     public function __construct(?DecoderProviderInterface $decoderProvider = null)
     {
-        if ($decoderProvider === null) {
-            $decoderProvider = new DecoderProvider([
-                'json' => new JsonDecoder(),
-            ]);
-        }
-
-        $this->decoderProvider = $decoderProvider;
+        $this->decoderProvider = $decoderProvider ?? new DecoderProvider([
+            'json' => new JsonDecoder(),
+        ]);
     }
 
     public function decode(Request $request): ParameterBag
@@ -59,7 +61,7 @@ final class BodyConverter implements BodyConverterInterface
     private function getFormat(Request $request, string $contentType): ?string
     {
         $format = $request->getFormat($contentType);
-        if ($format === null && $contentType === 'application/merge-patch+json') {
+        if ($format === null && isset(self::JSON_FORMATS[$contentType])) {
             return 'json';
         }
 
