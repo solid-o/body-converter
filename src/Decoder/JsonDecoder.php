@@ -30,7 +30,7 @@ class JsonDecoder implements DecoderInterface
             throw new InvalidJSONException($content, $e->getMessage(), $e);
         }
 
-        array_walk_recursive($content, static function (&$value) {
+        array_walk_recursive($content, static function (&$value): void {
             if ($value === false) {
                 $value = '0';
             } elseif ($value !== null && ! is_string($value)) {
