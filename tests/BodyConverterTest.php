@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Solido\BodyConverter\Tests;
 
+use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
 use Solido\BodyConverter\BodyConverter;
 use Solido\BodyConverter\Decoder\DecoderProvider;
 use Solido\BodyConverter\Decoder\JsonDecoder;
 use Symfony\Component\HttpFoundation\Request;
-use function spl_object_hash;
 
 class BodyConverterTest extends TestCase
 {
@@ -27,7 +27,19 @@ class BodyConverterTest extends TestCase
         $request->setMethod(Request::METHOD_POST);
         $request->headers->set('Content-Type', 'application/json');
 
-        self::assertEquals(['options' => ['option' => '0']], $this->converter->decode($request)->all());
+        self::assertEquals(['options' => ['option' => '0']], $this->converter->decode($request));
+    }
+
+    public function testShouldDecodeContentCorrectlyFromPsrServerRequest(): void
+    {
+        $request = new ServerRequest(
+            'POST',
+            'http://localhost/',
+            ['Content-Type' => 'application/json'],
+            '{ "options": { "option": false } }'
+        );
+
+        self::assertEquals(['options' => ['option' => '0']], $this->converter->decode($request));
     }
 
     public function testShouldReturnACopyOfOriginalParameterBagIfFormDataHasBeenPassed(): void
@@ -37,7 +49,16 @@ class BodyConverterTest extends TestCase
 
         $ret = $this->converter->decode($request);
 
-        self::assertEquals(['options' => ['option' => '0']], $ret->all());
-        self::assertNotEquals(spl_object_hash($ret), spl_object_hash($request->request));
+        self::assertEquals(['options' => ['option' => '0']], $ret);
+    }
+
+    public function testShouldReturnACopyOfParsedBodyIfFormDataHasBeenPassed(): void
+    {
+        $request = (new ServerRequest('POST', 'http://localhost/'))
+            ->withParsedBody(['options' => ['option' => '0']]);
+
+        $ret = $this->converter->decode($request);
+
+        self::assertEquals(['options' => ['option' => '0']], $ret);
     }
 }

@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace Solido\BodyConverter;
 
-use Symfony\Component\HttpFoundation\ParameterBag;
-use Symfony\Component\HttpFoundation\Request;
-
 interface BodyConverterInterface
 {
     /**
-     * Decodes request content into a parameter bag.
+     * Decodes request content into an array of parameters.
+     *
+     * @return array<string, mixed>
      */
-    public function decode(Request $request): ParameterBag;
+    public function decode(object $request): array;
 }
