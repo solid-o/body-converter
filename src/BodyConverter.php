@@ -8,8 +8,8 @@ use Solido\BodyConverter\Decoder\DecoderProvider;
 use Solido\BodyConverter\Decoder\DecoderProviderInterface;
 use Solido\BodyConverter\Decoder\JsonDecoder;
 use Solido\BodyConverter\Exception\UnsupportedFormatException;
-use Solido\Common\RequestAdapter\RequestAdapterFactory;
-use Solido\Common\RequestAdapter\RequestAdapterFactoryInterface;
+use Solido\Common\AdapterFactory;
+use Solido\Common\AdapterFactoryInterface;
 
 use function in_array;
 
@@ -25,11 +25,11 @@ final class BodyConverter implements BodyConverterInterface
     ];
 
     private DecoderProviderInterface $decoderProvider;
-    private RequestAdapterFactoryInterface $adapterFactory;
+    private AdapterFactoryInterface $adapterFactory;
 
-    public function __construct(?DecoderProviderInterface $decoderProvider = null, ?RequestAdapterFactoryInterface $adapterFactory = null)
+    public function __construct(?DecoderProviderInterface $decoderProvider = null, ?AdapterFactoryInterface $adapterFactory = null)
     {
-        $this->adapterFactory = $adapterFactory ?? new RequestAdapterFactory();
+        $this->adapterFactory = $adapterFactory ?? new AdapterFactory();
         $this->decoderProvider = $decoderProvider ?? new DecoderProvider([
             'json' => new JsonDecoder(),
         ]);
@@ -40,7 +40,7 @@ final class BodyConverter implements BodyConverterInterface
      */
     public function decode(object $request): array
     {
-        $adapter = $this->adapterFactory->factory($request);
+        $adapter = $this->adapterFactory->createRequestAdapter($request);
         $contentType = $adapter->getContentType();
         if (
             empty($contentType) ||
