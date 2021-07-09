@@ -28,6 +28,7 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "psr/http-message": "^1.0",
         "roave/security-advisories": "dev-master",
+        "solido/common": "dev-master",
         "solido/php-coding-standards": "dev-master",
         "symfony/http-foundation": "^4.4 || ^5.0"
     },

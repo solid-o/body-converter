@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44ac36785afc0f4974ce0c4a82c5045d",
+    "content-hash": "f0b4e8489b735e5efb7d23fcb5408bcd",
     "packages": [],
     "packages-dev": [
         {
@@ -2878,6 +2878,73 @@
             "time": "2021-06-07T10:08:42+00:00"
         },
         {
+            "name": "solido/common",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/solid-o/common.git",
+                "reference": "26619d660e8741ec665c57b9cfe3bc7fcf4b7e47"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/solid-o/common/zipball/26619d660e8741ec665c57b9cfe3bc7fcf4b7e47",
+                "reference": "26619d660e8741ec665c57b9cfe3bc7fcf4b7e47",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.4 || ^8.0",
+                "symfony/polyfill-php80": "^1.15",
+                "thecodingmachine/safe": "^1.1"
+            },
+            "require-dev": {
+                "doctrine/orm": "^2.7",
+                "doctrine/persistence": "^1.0 || ^2.0",
+                "nyholm/psr7": "^1.0",
+                "ocramius/proxy-manager": "^2.0 || ^3.0",
+                "phpspec/prophecy-phpunit": "^2.0",
+                "phpunit/phpunit": "^9.4",
+                "psr/http-message": "^1.0",
+                "roave/security-advisories": "dev-master",
+                "solido/body-converter": "^0.2@dev",
+                "solido/php-coding-standards": "dev-master",
+                "symfony/config": "^4.4 || ^5.0",
+                "symfony/form": "^4.4 || ^5.0",
+                "symfony/http-foundation": "^4.4 || ^5.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Solido\\Common\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alessandro Chitolina",
+                    "email": "alekitto@gmail.com"
+                },
+                {
+                    "name": "Massimiliano Braglia",
+                    "email": "massimiliano.braglia@gmail.com"
+                }
+            ],
+            "description": "Common classes for solido suite",
+            "support": {
+                "issues": "https://github.com/solid-o/common/issues",
+                "source": "https://github.com/solid-o/common/tree/master"
+            },
+            "time": "2021-07-09T08:32:57+00:00"
+        },
+        {
             "name": "solido/php-coding-standards",
             "version": "dev-master",
             "source": {
@@ -3728,6 +3795,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "roave/security-advisories": 20,
+        "solido/common": 20,
         "solido/php-coding-standards": 20
     },
     "prefer-stable": false,

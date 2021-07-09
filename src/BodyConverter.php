@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Solido\BodyConverter;
 
-use Solido\BodyConverter\Adapter\AdapterFactory;
-use Solido\BodyConverter\Adapter\AdapterFactoryInterface;
 use Solido\BodyConverter\Decoder\DecoderProvider;
 use Solido\BodyConverter\Decoder\DecoderProviderInterface;
 use Solido\BodyConverter\Decoder\JsonDecoder;
 use Solido\BodyConverter\Exception\UnsupportedFormatException;
+use Solido\Common\RequestAdapter\RequestAdapterFactory;
+use Solido\Common\RequestAdapter\RequestAdapterFactoryInterface;
 
 use function in_array;
 
@@ -25,11 +25,11 @@ final class BodyConverter implements BodyConverterInterface
     ];
 
     private DecoderProviderInterface $decoderProvider;
-    private AdapterFactoryInterface $adapterFactory;
+    private RequestAdapterFactoryInterface $adapterFactory;
 
-    public function __construct(?DecoderProviderInterface $decoderProvider = null, ?AdapterFactoryInterface $adapterFactory = null)
+    public function __construct(?DecoderProviderInterface $decoderProvider = null, ?RequestAdapterFactoryInterface $adapterFactory = null)
     {
-        $this->adapterFactory = $adapterFactory ?? new AdapterFactory();
+        $this->adapterFactory = $adapterFactory ?? new RequestAdapterFactory();
         $this->decoderProvider = $decoderProvider ?? new DecoderProvider([
             'json' => new JsonDecoder(),
         ]);
@@ -41,17 +41,17 @@ final class BodyConverter implements BodyConverterInterface
     public function decode(object $request): array
     {
         $adapter = $this->adapterFactory->factory($request);
-        $contentType = $adapter->getContentType($request);
+        $contentType = $adapter->getContentType();
         if (
             empty($contentType) ||
-            in_array($adapter->getRequestMethod($request), ['GET', 'HEAD'], true)
+            in_array($adapter->getRequestMethod(), ['GET', 'HEAD'], true)
         ) {
-            return $adapter->getRequestParams($request);
+            return $adapter->getRequestParams();
         }
 
         $format = $this->getFormat($contentType);
         if ($format === null || $format === 'form') {
-            return $adapter->getRequestParams($request);
+            return $adapter->getRequestParams();
         }
 
         try {
@@ -60,7 +60,7 @@ final class BodyConverter implements BodyConverterInterface
             return [];
         }
 
-        $content = $adapter->getRequestContent($request);
+        $content = $adapter->getRequestContent();
 
         return $decoder->decode($content);
     }
