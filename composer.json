@@ -20,7 +20,8 @@
     },
     "require": {
         "php": "^7.4 || ^8.0",
-        "ext-json": "*"
+        "ext-json": "*",
+        "solido/common": "^0.2"
     },
     "require-dev": {
         "nyholm/psr7": "^1.0",
@@ -28,7 +29,6 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "psr/http-message": "^1.0",
         "roave/security-advisories": "dev-master",
-        "solido/common": "dev-master",
         "solido/php-coding-standards": "dev-master",
         "symfony/http-foundation": "^4.4 || ^5.0"
     },
