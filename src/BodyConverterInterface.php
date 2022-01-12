@@ -9,7 +9,7 @@ interface BodyConverterInterface
     /**
      * Decodes request content into an array of parameters.
      *
-     * @return array<string, mixed>
+     * @return array<int|string, mixed>
      */
     public function decode(object $request): array;
 }

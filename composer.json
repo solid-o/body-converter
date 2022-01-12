@@ -14,7 +14,7 @@
         }
     ],
     "scripts": {
-        "phpstan": "phpstan analyse src/ -c vendor/solido/php-coding-standards/phpstan.neon --level=8 --no-progress -vvv --memory-limit=2048M",
+        "phpstan": "phpstan analyse src/ -c vendor/solido/php-coding-standards/phpstan.neon --level=9 --no-progress -vvv --memory-limit=2048M",
         "cscheck": "vendor/bin/phpcs --standard=Solido src/",
         "csfix": "vendor/bin/phpcbf --standard=Solido src/"
     },
@@ -30,7 +30,7 @@
         "psr/http-message": "^1.0",
         "roave/security-advisories": "dev-master",
         "solido/php-coding-standards": "dev-master",
-        "symfony/http-foundation": "^4.4 || ^5.0"
+        "symfony/http-foundation": "^4.4 || ^5.0 || ^6.0"
     },
     "autoload": {
         "psr-4": {
@@ -43,7 +43,11 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
+        }
     },
     "extra": {
         "branch-alias": {
