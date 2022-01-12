@@ -6,15 +6,15 @@ namespace Solido\BodyConverter;
 
 use Solido\BodyConverter\Decoder\DecoderProvider;
 use Solido\BodyConverter\Decoder\DecoderProviderInterface;
+use Solido\BodyConverter\Decoder\FormDecoder;
 use Solido\BodyConverter\Decoder\JsonDecoder;
-use Solido\BodyConverter\Exception\UnsupportedFormatException;
 use Solido\Common\AdapterFactory;
 use Solido\Common\AdapterFactoryInterface;
 
-use function in_array;
-
 final class BodyConverter implements BodyConverterInterface
 {
+    use BodyConverterTrait;
+
     private const FORM_FORMAT = 'application/x-www-form-urlencoded';
     private const JSON_FORMATS = [
         'application/json' => true,
@@ -24,48 +24,16 @@ final class BodyConverter implements BodyConverterInterface
         'application/merge-patch+json' => true,
     ];
 
-    private DecoderProviderInterface $decoderProvider;
-    private AdapterFactoryInterface $adapterFactory;
-
     public function __construct(?DecoderProviderInterface $decoderProvider = null, ?AdapterFactoryInterface $adapterFactory = null)
     {
         $this->adapterFactory = $adapterFactory ?? new AdapterFactory();
         $this->decoderProvider = $decoderProvider ?? new DecoderProvider([
+            'form' => new FormDecoder(),
             'json' => new JsonDecoder(),
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function decode(object $request): array
-    {
-        $adapter = $this->adapterFactory->createRequestAdapter($request);
-        $contentType = $adapter->getContentType();
-        if (
-            empty($contentType) ||
-            in_array($adapter->getRequestMethod(), ['GET', 'HEAD'], true)
-        ) {
-            return $adapter->getRequestParams();
-        }
-
-        $format = $this->getFormat($contentType);
-        if ($format === null || $format === 'form') {
-            return $adapter->getRequestParams();
-        }
-
-        try {
-            $decoder = $this->decoderProvider->get($format);
-        } catch (UnsupportedFormatException $ex) {
-            return [];
-        }
-
-        $content = $adapter->getRequestContent();
-
-        return $decoder->decode($content);
-    }
-
-    protected function getFormat(string $contentType): ?string
+    private function getFormat(string $contentType): ?string
     {
         if (isset(self::JSON_FORMATS[$contentType])) {
             return 'json';

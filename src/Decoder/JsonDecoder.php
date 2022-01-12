@@ -7,7 +7,6 @@ namespace Solido\BodyConverter\Decoder;
 use Solido\BodyConverter\Exception\InvalidJSONException;
 use Throwable;
 
-use function is_string;
 use function json_decode;
 use function Safe\array_walk_recursive;
 
@@ -33,7 +32,7 @@ class JsonDecoder implements DecoderInterface
         array_walk_recursive($content, static function (&$value): void {
             if ($value === false) {
                 $value = '0';
-            } elseif ($value !== null && ! is_string($value)) {
+            } elseif ($value !== null) {
                 $value = (string) $value;
             }
         });
