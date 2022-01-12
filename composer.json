@@ -21,7 +21,7 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "ext-json": "*",
-        "solido/common": "^0.2"
+        "solido/common": "^0.3"
     },
     "require-dev": {
         "nyholm/psr7": "^1.0",
