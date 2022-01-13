@@ -33,7 +33,7 @@ final class BodyConverter implements BodyConverterInterface
         ]);
     }
 
-    private function getFormat(string $contentType): ?string
+    protected function getFormat(string $contentType): ?string
     {
         if (isset(self::JSON_FORMATS[$contentType])) {
             return 'json';

@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Solido\BodyConverter\Decoder;
 
+use function array_pop;
+use function assert;
 use function count;
 use function end;
 use function explode;
 use function is_array;
 use function key;
-use function strlen;
 use function strpbrk;
 use function strpos;
-use function strstr;
+use function strtok;
 use function substr;
 use function trim;
 use function urldecode;
@@ -44,7 +45,7 @@ class FormDecoder implements DecoderInterface
         $queryString = trim($queryString);
         $firstChar = $queryString[0] ?? '';
         if ($firstChar === '?' || $firstChar === '#' || $firstChar === '&') {
-            $queryString = substr($queryString, 1);
+            $queryString = substr($queryString, 1); /* @phpstan-ignore-line */
         }
 
         if (empty($queryString)) {
@@ -53,18 +54,14 @@ class FormDecoder implements DecoderInterface
 
         $parameters = [];
         // Process one parameter at a time, split query string by "&"
-        foreach (explode('&', $queryString) as $parameter) {
-            if ($parameter === '') {
-                // Empty parameter, ignore.
-                continue;
-            }
-
+        $parameter = strtok($queryString, '&');
+        for (; $parameter !== false; $parameter = strtok('&')) {
             // Search for an equal sign; if not present, the value is null.
-            [$key, $value] = explode('=', $parameter, 2) + [null, null];
+            [$key, $value] = explode('=', $parameter, 2) + ['', ''];
 
             // Decode parameters: will be sent encoded from the browser.
             $key = urldecode($key);
-            $value = urldecode($value ?? '');
+            $value = urldecode($value);
 
             $pos = strpos($key, '[');
             if ($pos === false) {
@@ -74,27 +71,27 @@ class FormDecoder implements DecoderInterface
             }
 
             // Check if parameter key is well-formed
-            $i = strpos($key, '[');
-            $token = substr($key, 0, $i);
+            $token = substr($key, 0, $pos); /* @phpstan-ignore-line */
             $tokens = [];
 
             $key = strpbrk($key, '[');
-            for (; $key !== '';) {
-                if ($key[0] !== '[') {
-                    break;
-                }
+            assert($key !== false);
 
-                $key = substr($key, 1);
-                $n = strstr($key, ']', true);
-                if ($n === false) {
-                    $tokens[] = $token . (empty($tokens) ? '[' . $key : '');
+            while ($key !== '' && $key[0] === '[') {
+                $key = substr($key, 1); /* @phpstan-ignore-line */
+                $pos = strpos($key, ']');
+                if ($pos === false) {
+                    // ']' character cannot be found in the key which means that the parameter is malformed
+                    // If the token set is empty use the entire key, otherwise use only the already collected
+                    // tokens and discard the rest of the key.
+                    $tokens[] = $token . (count($tokens) === 0 ? "[$key" : ''); // phpcs:disable Squiz.Strings.DoubleQuoteUsage.ContainsVar
                     $token = null;
                     break;
                 }
 
                 $tokens[] = $token;
-                $token = $n;
-                $key = substr($key, strlen($n) + 1);
+                $token = substr($key, 0, $pos); /* @phpstan-ignore-line */
+                $key = substr($key, $pos + 1); /* @phpstan-ignore-line */
             }
 
             if ($token !== null) {
@@ -102,20 +99,8 @@ class FormDecoder implements DecoderInterface
             }
 
             $current = &$parameters;
-            $len = count($tokens);
-            foreach ($tokens as $idx => $token) {
-                if ($idx === $len - 1) {
-                    // We reached the end of the tokens list. Now add the parameter
-                    // value to the appropriate key (push to the array if no key is specified)
-                    if ($token === '') {
-                        $current[] = $value;
-                    } else {
-                        $current[$token] = $value;
-                    }
-
-                    break;
-                }
-
+            $lastToken = array_pop($tokens);
+            foreach ($tokens as $token) {
                 // Here's where the magic happens: current is now a pointer to the current-nesting level
                 // parameter array. We know that this is not the last token, so we have to create
                 // empty arrays if needed, and prepare for the next loop.
@@ -139,6 +124,14 @@ class FormDecoder implements DecoderInterface
 
                 // Update the current pointer.
                 $current = &$current[$nextKey];
+            }
+
+            // We reached the end of the tokens list. Now add the parameter
+            // value to the appropriate key (push to the array if no key is specified)
+            if ($lastToken === '') {
+                $current[] = $value;
+            } else {
+                $current[$lastToken] = $value;
             }
         }
 
