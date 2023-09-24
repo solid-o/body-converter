@@ -2,8 +2,9 @@ name: PHPStan
 
 on:
     push:
-    pull_request:
-        types: [opened]
+        branches:
+            - master
+    pull_request_target:
 
 jobs:
     build:
@@ -29,9 +30,5 @@ jobs:
             -   name: Install dependencies with composer
                 run: composer update --no-progress --no-suggest --no-interaction --prefer-dist
 
-            -   if: ${{ github.base_ref == '' }}
-                run: composer phpstan
-
-            -   name: Run a static analysis with phpstan/phpstan
-                if: ${{ github.base_ref != '' }}
-                run: composer phpstan --error-format=checkstyle | cs2pr
+            -   name: Run PHPStan
+                run: composer phpstan --error-format=checkstyle
