@@ -35,7 +35,7 @@ final class BodyConverter implements BodyConverterInterface
         $this->decoderProvider = $decoderProvider;
     }
 
-    protected function getFormat(string $contentType): string|null
+    private function getFormat(string $contentType): string|null
     {
         if (isset(self::JSON_FORMATS[$contentType])) {
             return 'json';
