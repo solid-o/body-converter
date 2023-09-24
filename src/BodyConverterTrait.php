@@ -43,5 +43,5 @@ trait BodyConverterTrait
         return $decoder->decode($content);
     }
 
-    abstract protected function getFormat(string $contentType): ?string;
+    abstract protected function getFormat(string $contentType): string|null;
 }

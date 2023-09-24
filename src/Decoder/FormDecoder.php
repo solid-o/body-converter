@@ -37,9 +37,7 @@ class FormDecoder implements DecoderInterface
         return 'form';
     }
 
-    /**
-     * @return array<array-key, mixed>
-     */
+    /** @return array<array-key, mixed> */
     private static function queryStringToArray(string $queryString): array
     {
         $queryString = trim($queryString);

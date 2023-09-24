@@ -10,13 +10,9 @@ use function Safe\sprintf;
 
 class InvalidJSONException extends DecodeException
 {
-    private string $invalidJson;
-
-    public function __construct(string $invalidJson, string $error, ?Throwable $previous = null)
+    public function __construct(private string $invalidJson, string $error, Throwable|null $previous = null)
     {
         parent::__construct(sprintf('Cannot decode JSON: %s', $error), 0, $previous);
-
-        $this->invalidJson = $invalidJson;
     }
 
     /**

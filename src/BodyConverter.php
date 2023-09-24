@@ -24,16 +24,18 @@ final class BodyConverter implements BodyConverterInterface
         'application/merge-patch+json' => true,
     ];
 
-    public function __construct(?DecoderProviderInterface $decoderProvider = null, ?AdapterFactoryInterface $adapterFactory = null)
-    {
-        $this->adapterFactory = $adapterFactory ?? new AdapterFactory();
-        $this->decoderProvider = $decoderProvider ?? new DecoderProvider([
+    public function __construct(
+        DecoderProviderInterface $decoderProvider = new DecoderProvider([
             'form' => new FormDecoder(),
             'json' => new JsonDecoder(),
-        ]);
+        ]),
+        AdapterFactoryInterface $adapterFactory = new AdapterFactory(),
+    ) {
+        $this->adapterFactory = $adapterFactory;
+        $this->decoderProvider = $decoderProvider;
     }
 
-    protected function getFormat(string $contentType): ?string
+    protected function getFormat(string $contentType): string|null
     {
         if (isset(self::JSON_FORMATS[$contentType])) {
             return 'json';

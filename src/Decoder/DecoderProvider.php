@@ -10,15 +10,9 @@ use function Safe\sprintf;
 
 class DecoderProvider implements DecoderProviderInterface
 {
-    /** @var array<string, DecoderInterface> */
-    private array $decoders;
-
-    /**
-     * @param array<string, DecoderInterface> $decoders
-     */
-    public function __construct(array $decoders)
+    /** @param array<string, DecoderInterface> $decoders */
+    public function __construct(private array $decoders)
     {
-        $this->decoders = $decoders;
     }
 
     public function get(string $format): DecoderInterface
