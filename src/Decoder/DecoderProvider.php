@@ -6,7 +6,7 @@ namespace Solido\BodyConverter\Decoder;
 
 use Solido\BodyConverter\Exception\UnsupportedFormatException;
 
-use function Safe\sprintf;
+use function sprintf;
 
 class DecoderProvider implements DecoderProviderInterface
 {

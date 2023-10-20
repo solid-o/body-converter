@@ -43,7 +43,7 @@ class FormDecoder implements DecoderInterface
         $queryString = trim($queryString);
         $firstChar = $queryString[0] ?? '';
         if ($firstChar === '?' || $firstChar === '#' || $firstChar === '&') {
-            $queryString = substr($queryString, 1); /* @phpstan-ignore-line */
+            $queryString = substr($queryString, 1);
         }
 
         if (empty($queryString)) {
@@ -69,14 +69,14 @@ class FormDecoder implements DecoderInterface
             }
 
             // Check if parameter key is well-formed
-            $token = substr($key, 0, $pos); /* @phpstan-ignore-line */
+            $token = substr($key, 0, $pos);
             $tokens = [];
 
             $key = strpbrk($key, '[');
             assert($key !== false);
 
             while ($key !== '' && $key[0] === '[') {
-                $key = substr($key, 1); /* @phpstan-ignore-line */
+                $key = substr($key, 1);
                 $pos = strpos($key, ']');
                 if ($pos === false) {
                     // ']' character cannot be found in the key which means that the parameter is malformed
@@ -88,8 +88,8 @@ class FormDecoder implements DecoderInterface
                 }
 
                 $tokens[] = $token;
-                $token = substr($key, 0, $pos); /* @phpstan-ignore-line */
-                $key = substr($key, $pos + 1); /* @phpstan-ignore-line */
+                $token = substr($key, 0, $pos);
+                $key = substr($key, $pos + 1);
             }
 
             if ($token !== null) {
