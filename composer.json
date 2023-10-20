@@ -21,7 +21,7 @@
     "require": {
         "php": "^8.1",
         "ext-json": "*",
-        "solido/common": "^0.3 || ^0.4"
+        "solido/common": "^0.4"
     },
     "require-dev": {
         "nyholm/psr7": "^1.0",
@@ -29,7 +29,7 @@
         "phpspec/prophecy-phpunit": "^2.0",
         "psr/http-message": "^1.0 || ^2.0",
         "roave/security-advisories": "dev-master",
-        "solido/php-coding-standards": "dev-master",
+        "solido/php-coding-standards": "dev-master#c495c01e4a51b3979c1a19ff53537061eceac8c9",
         "symfony/http-foundation": "^5.4 || ^6.0"
     },
     "autoload": {

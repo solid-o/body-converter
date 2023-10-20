@@ -21,7 +21,7 @@ use function urldecode;
 class FormDecoder implements DecoderInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function decode(string $content): array
     {

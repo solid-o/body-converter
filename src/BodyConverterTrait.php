@@ -15,7 +15,7 @@ trait BodyConverterTrait
     private AdapterFactoryInterface $adapterFactory;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function decode(object $request): array
     {

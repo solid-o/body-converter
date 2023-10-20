@@ -15,7 +15,7 @@ use const JSON_THROW_ON_ERROR;
 class JsonDecoder implements DecoderInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function decode(string $content): array
     {
