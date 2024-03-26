@@ -10,19 +10,19 @@ jobs:
         runs-on: ubuntu-latest
         name: Check code style
         steps:
-            -   uses: actions/checkout@v2
+            -   uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
                 with:
                     fetch-depth: 10
 
             -   name: Install PHP
-                uses: shivammathur/setup-php@v2
+                uses: shivammathur/setup-php@73963f5001e335723c998e4a0125ce060083985c # v2
                 with:
                     coverage: none
                     php-version: "8.1"
                     tools: cs2pr
 
             -   name: Cache dependencies installed with composer
-                uses: actions/cache@v1
+                uses: actions/cache@f5ce41475b483ad7581884324a6eca9f48f8dcc7 # v1
                 with:
                     path: "~/.composer/cache"
                     key: php-${{ matrix.php-version }}-composer-locked-${{ hashFiles('composer.lock') }}
