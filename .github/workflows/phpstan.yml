@@ -21,7 +21,7 @@ jobs:
                     tools: cs2pr
 
             -   name: Cache dependencies installed with composer
-                uses: actions/cache@v1
+                uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
                 with:
                     path: "~/.composer/cache"
                     key: php-${{ matrix.php-version }}-composer-locked-${{ hashFiles('composer.lock') }}
