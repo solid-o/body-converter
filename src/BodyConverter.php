@@ -15,8 +15,8 @@ final class BodyConverter implements BodyConverterInterface
 {
     use BodyConverterTrait;
 
-    private const FORM_FORMAT = 'application/x-www-form-urlencoded';
-    private const JSON_FORMATS = [
+    private const string FORM_FORMAT = 'application/x-www-form-urlencoded';
+    private const array JSON_FORMATS = [
         'application/json' => true,
         'application/x-json' => true,
         'application/ld+json' => true,
