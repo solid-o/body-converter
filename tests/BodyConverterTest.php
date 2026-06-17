@@ -6,6 +6,7 @@ namespace Solido\BodyConverter\Tests;
 
 use Nyholm\Psr7\ServerRequest;
 use Nyholm\Psr7\Stream;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Solido\BodyConverter\BodyConverter;
@@ -79,9 +80,7 @@ class BodyConverterTest extends TestCase
         self::assertEquals(['test'], $ret);
     }
 
-    /**
-     * @dataProvider provideGetMethods
-     */
+    #[DataProvider('provideGetMethods')]
     public function testShouldReturnACopyOfOriginalParameterBagIfGetOrHeadMethodHasPassed(string $method): void
     {
         $request = (new ServerRequest('GET', 'http://localhost/'))
@@ -94,7 +93,7 @@ class BodyConverterTest extends TestCase
         self::assertEquals(['test'], $ret);
     }
 
-    public function provideGetMethods(): iterable
+    public static function provideGetMethods(): iterable
     {
         yield ['GET'];
         yield ['HEAD'];

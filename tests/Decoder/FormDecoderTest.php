@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Solido\BodyConverter\Tests\Decoder;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Solido\BodyConverter\Decoder\FormDecoder;
-use Solido\BodyConverter\Decoder\JsonDecoder;
 
 class FormDecoderTest extends TestCase
 {
@@ -17,7 +17,7 @@ class FormDecoderTest extends TestCase
         $this->decoder = new FormDecoder();
     }
 
-    public function dataProviderForDecode(): iterable
+    public static function dataProviderForDecode(): iterable
     {
         return [
             [[], ''],
@@ -57,9 +57,7 @@ class FormDecoderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForDecode
-     */
+    #[DataProvider('dataProviderForDecode')]
     public function testDecode(array $expected, string $input): void
     {
         self::assertEquals($expected, $this->decoder->decode($input));

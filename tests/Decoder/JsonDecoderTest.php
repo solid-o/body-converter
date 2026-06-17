@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Solido\BodyConverter\Tests\Decoder;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Solido\BodyConverter\Decoder\JsonDecoder;
 use Solido\BodyConverter\Exception\InvalidJSONException;
@@ -17,7 +18,7 @@ class JsonDecoderTest extends TestCase
         $this->decoder = new JsonDecoder();
     }
 
-    public function dataProviderForDecode(): iterable
+    public static function dataProviderForDecode(): iterable
     {
         return [
             [[], ''],
@@ -32,9 +33,7 @@ class JsonDecoderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider dataProviderForDecode
-     */
+    #[DataProvider('dataProviderForDecode')]
     public function testDecode(array $expected, string $input): void
     {
         self::assertSame($expected, $this->decoder->decode($input));
