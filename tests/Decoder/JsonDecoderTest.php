@@ -22,6 +22,8 @@ class JsonDecoderTest extends TestCase
     {
         return [
             [[], ''],
+            [[], '{}'],
+            [[], '[]'],
             [['option' => '0'], '{ "option": false }'],
             [['option' => '1'], '{ "option": true }'],
             [['option' => '42'], '{ "option": 42 }'],
@@ -37,6 +39,36 @@ class JsonDecoderTest extends TestCase
     public function testDecode(array $expected, string $input): void
     {
         self::assertSame($expected, $this->decoder->decode($input));
+    }
+
+    public static function scalarJsonProvider(): iterable
+    {
+        return [
+            'zero' => ['0'],
+            'integer' => ['42'],
+            'negative integer' => ['-42'],
+            'float' => ['12.0435'],
+            'true' => ['true'],
+            'false' => ['false'],
+            'null' => ['null'],
+            'string' => ['"test"'],
+            'empty string' => ['""'],
+            'surrounding whitespace' => [" \n false \t"],
+        ];
+    }
+
+    #[DataProvider('scalarJsonProvider')]
+    public function testScalarJsonProducesControlledDecodeError(string $input): void
+    {
+        $this->expectException(InvalidJSONException::class);
+        $this->expectExceptionMessage('Cannot decode JSON: Expected a JSON object or array.');
+
+        try {
+            $this->decoder->decode($input);
+        } catch (InvalidJSONException $exception) {
+            self::assertSame($input, $exception->getInvalidJson());
+            throw $exception;
+        }
     }
 
     public function testDecodeShouldThrowOnInvalidJSON(): void

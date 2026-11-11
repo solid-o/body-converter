@@ -4,6 +4,10 @@ Solido Body Converter Component
 Decodes and normalizes request body into a manageable parameter bag.  
 Read more in the [component documentation](https://solid-o.github.io/docs/#/body-converter)
 
+JSON bodies must contain an object or array. Scalar JSON values (including `null`)
+raise `InvalidJSONException`, a controlled decoding error. An empty request body
+continues to decode as an empty parameter array.
+
 Resources
 ---------
 
